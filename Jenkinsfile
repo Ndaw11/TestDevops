@@ -1,17 +1,30 @@
 pipeline {
     agent any
- tool 'maven-3.9.6'
+
+    environment {
+        // Spécifiez le chemin vers Maven
+        MAVEN_HOME = 'maven-3.9.6'
+        PATH = "$MAVEN_HOME/bin:$PATH"
+    }
+
     stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/Ndaw11/TestDevops.git'
+            }
+        }
+
         stage('Build') {
             steps {
-                sh "mvn clean install"
+                // Utilisez Maven pour construire le projet
+                sh 'mvn clean install'
             }
         }
-        stage('Test') {
-            steps {
-                sh "mvn compile"
-            }
-        }
-        // Add stages for Nexus deployment or artifact downloading if needed
+
+        // Ajoutez d'autres étapes selon vos besoins
+    }
+
+    post {
+        // Étapes de post-traitement, notifications, etc.
     }
 }
